@@ -6,14 +6,18 @@ const LoginUser = async (req, res) => {
         const { phoneNoOrUsername, password } = req.body;
 
 
-        if (!phoneNoOrUsername || !password) {
+        if (!password) {
             return res.status(400).json({
                 success: false,
-                message: 'All fields are required'
+                message: 'Password is required'
             });
         }
-
-
+        if (!phoneNoOrUsername) {
+            return res.status(400).json({
+                success: false,
+                message: 'Username or phone number is required'
+            });
+        }
 
         const user = await UserModel.findOne({
             $or: [
@@ -21,18 +25,17 @@ const LoginUser = async (req, res) => {
                 { phoneNo: phoneNoOrUsername }
             ]
         });
-            if (!user) {
+        if (!user) {
             const isPhone = /^\d+$/.test(phoneNoOrUsername);
             return res.status(400).json({
                 success: false,
                 message: isPhone ? 'Phone number not found' : 'Username not found'
             });
-            }
-
+        }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({
+            return res.status(401).json({
                 success: false,
                 message: 'Incorrect password'
             });
@@ -44,7 +47,7 @@ const LoginUser = async (req, res) => {
 
         });
     } catch (error) {
-        
+
         console.error('Login error:', error);
         return res.status(500).json({
             success: false,

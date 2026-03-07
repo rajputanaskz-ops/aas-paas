@@ -28,20 +28,17 @@ const SignUpUser = async (req, res) => {
             success: false,
             message: `Passwords do not match`
         })
-        console.log(1)
 
         const hashedPassword = await bcrypt.hash(password,10)
-        console.log(1)
 
         const createdUser = await UserModel.create({
             phoneNo: phoneNo,
             username,
             password: hashedPassword
         })
-        console.log(1)
 
         return res.json({
-            status: 200,
+            status: 201,
             success: true,
             message: `User has been created`
         })
