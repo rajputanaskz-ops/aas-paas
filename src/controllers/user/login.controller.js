@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 
 const LoginUser = async (req, res) => {
     try {
-        const { phoneNoOrUsername, password } = req.body;
-
+        const { phoneNoOrUsername, password } = await req.body;
 
         if (!password) {
             return res.status(400).json({
@@ -27,6 +26,7 @@ const LoginUser = async (req, res) => {
         });
         if (!user) {
             const isPhone = /^\d+$/.test(phoneNoOrUsername);
+
             return res.status(400).json({
                 success: false,
                 message: isPhone ? 'Phone number not found' : 'Username not found'
@@ -34,6 +34,7 @@ const LoginUser = async (req, res) => {
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
+        
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
@@ -46,12 +47,12 @@ const LoginUser = async (req, res) => {
             message: 'Login successful',
 
         });
-    } catch (error) {
+    }
+    catch (error) {
 
-        console.error('Login error:', error);
         return res.status(500).json({
             success: false,
-            message: 'Server error'
+            message: 'Login failed'
         });
     }
 }

@@ -6,7 +6,8 @@ const SignUpUser = async (req, res) => {
     try {
         const { phoneNo, username, password, confirmPassword } = await req.body
 
-        let fields = [phoneNo, username, password, confirmPassword]
+        let fields = [phoneNo, username, password, confirmPassword];
+        
         for (const field of fields) {
             if (!field) return res.json({
                 status: 400,
