@@ -9,4 +9,10 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use('/user', userRouter)
 app.use('/admin', adminRouter)
 
+app.get('/health', (req,res)=> {
+    return res.json({
+        message: 'Route is healthy'
+    })
+})
+
 export { app }  
