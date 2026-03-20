@@ -9,6 +9,7 @@
     "bson": "^7.1.1",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "h3-js": "^4.4.0",
     "kareem": "^3.0.0",
     "memory-pager": "^1.5.0",
     "mongodb": "^7.0.0",
